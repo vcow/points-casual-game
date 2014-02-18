@@ -97,7 +97,7 @@ package modules.capture
 				// Получить потенциально опасные точки, ход на которые
 				// может привести к победе противника
 				
-				var dangerPoints:Dictionary = getDangerPoints(side1, side2, 7);
+				var dangerPoints:Dictionary = getDangerPoints(side1, side2, 10);
 				
 				for each (var dpt:DPt in dangerPoints)
 				{
@@ -210,7 +210,7 @@ package modules.capture
 				{
 					// Обнаружен критически важный ход, который приведет к окружению
 					
-					if (isCriticalResult == PC_SIDE)
+					if (side1 == PC_SIDE)
 					{
 						// Будут окружены вражеские точки, верное направление, выбрать первую расчетную позицию
 						result = results[0];
@@ -225,19 +225,19 @@ package modules.capture
 				
 				if (templateField !== super._field)
 				{
-					// Это эвристический расчет, сымитировать ход стороны и
-					// расчитать возможный ход противника на следующей итерации
+					// Это эвристический расчет, сымитировать ход стороны и расчитать возможный ход противника
 					
 					templateField.setPointType(result.x, result.y, side1);
-					
-					// Меняем стороны местами чтобы выполнить эвристический расчет хода противоположной стороны
-					var x:int = side1;
-					side1 = side2;
-					side2 = x;
-					
-					// На случай выхода восстанавливаем первое полученное значение
-					result = results[0];
 				}
+				
+				// Меняем стороны местами чтобы выполнить эвристический расчет хода противоположной стороны
+				
+				var x:int = side1;
+				side1 = side2;
+				side2 = x;
+				
+				// На случай выхода восстанавливаем первое полученное значение
+				result = results[0];
 				
 			} while (complexity);
 			
@@ -498,7 +498,7 @@ package modules.capture
 					// Не найдено точек, которые считались бы опасными,
 					// поместить в результат самую опасную из найденных
 					
-					pt = rawResult[0].point;
+					pt = rawResult[rawResult.length - 1].point;
 					res[AI.getPointName(pt.x, pt.y)] = pt;
 				}
 			}
